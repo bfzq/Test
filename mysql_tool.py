@@ -47,13 +47,13 @@ def query(cnx, sql):
     cursor.close()
     return data
 
-if __name__ == '__main__':
-    cnx = open_mysql_connection("127.0.0.1", 3306, "root", "1qaz2wsx")
-    # execute(cnx, "create database test1");
-    use_database(cnx, "test1")
-    # execute(cnx, "create table test3(id int)")
-    execute(cnx, "insert into test3(id) value(1111)")
-    cnx.commit()
-    data = query(cnx, "select * from test3")
-    print(data)
-    close_mysql_connection(cnx)
+# if __name__ == '__main__':
+#     cnx = open_mysql_connection("127.0.0.1", 3306, "root", "1qaz2wsx")
+#     # execute(cnx, "create database test1");
+#     use_database(cnx, "test1")
+#     # execute(cnx, "create table test3(id int)")
+#     execute(cnx, "insert into test3(id) value(1111)")
+#     cnx.commit()
+#     data = query(cnx, "select * from test3")
+#     print(data)
+#     close_mysql_connection(cnx)
