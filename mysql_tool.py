@@ -14,8 +14,6 @@ def open_mysql_connection(host, port, user, passwd):
             print("Database dos not exist")
         else:
             print(err)
-    else:
-        cnx.close()
     return cnx
 
 def close_mysql_connection(cnx):
@@ -27,9 +25,6 @@ def use_database(cnx, DB_NAME):
         cursor.execute("use {}".format(DB_NAME))
     except mysql.connector.Error as err:
         print("Database {} does not exists.".format(DB_NAME))
-    else:
-        print(err)
-        exit(1)
 
 def execute(cnx, sql):
     cursor = cnx.cursor()
