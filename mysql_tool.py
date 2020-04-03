@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python
 
 import mysql.connector
 from mysql.connector import errorcode
@@ -7,6 +7,7 @@ def open_mysql_connection(host, port, user, passwd):
     try:
         cnx = mysql.connector.connect(host=host, user=user,
                                     password=passwd, port=port)
+        return cnx
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -14,7 +15,6 @@ def open_mysql_connection(host, port, user, passwd):
             print("Database dos not exist")
         else:
             print(err)
-    return cnx
 
 def close_mysql_connection(cnx):
     cnx.close()
@@ -25,6 +25,7 @@ def use_database(cnx, DB_NAME):
         cursor.execute("use {}".format(DB_NAME))
     except mysql.connector.Error as err:
         print("Database {} does not exists.".format(DB_NAME))
+    cursor.close()
 
 def execute(cnx, sql):
     cursor = cnx.cursor()
@@ -32,9 +33,27 @@ def execute(cnx, sql):
         cursor.execute(sql)
     except mysql.connector.Error as err:
         print(err)
-    
+    cursor.close()
+
+def query(cnx, sql):
+    cursor = cnx.cursor()
+    data = []
+    try:
+        cursor.execute(sql)
+        for row in cursor:
+            data.append(row)
+    except mysql.connector.Error as err:
+        print(err)
+    cursor.close()
+    return data
+
 if __name__ == '__main__':
-    cnx = open_mysql_connection("192.168.56.103", 3323, "root", "root")
-    use_database(cnx, "test")
+    cnx = open_mysql_connection("127.0.0.1", 3306, "root", "1qaz2wsx")
+    # execute(cnx, "create database test1");
+    use_database(cnx, "test1")
+    # execute(cnx, "create table test3(id int)")
     execute(cnx, "insert into test3(id) value(1111)")
+    cnx.commit()
+    data = query(cnx, "select * from test3")
+    print(data)
     close_mysql_connection(cnx)
