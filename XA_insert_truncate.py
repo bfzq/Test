@@ -3,9 +3,9 @@
 
 import pymysql as my
 
-def open_mysql_connection(host, port, user, password):
+def open_mysql_connection(host, port, user, password, database):
     try:
-        cnx = my.connect(host=host, port=port, user=user, password=password)
+        cnx = my.connect(host=host, port=port, user=user, password=password, db=database)
         return cnx
     except Exception as err:
         print(err)
@@ -25,9 +25,9 @@ def use_database(cnx, database):
         return -1
 
 if __name__ == '__main__':
-    cnx = open_mysql_connection("192.168.56.103", 3323, "root", "root")
+    cnx = open_mysql_connection("192.168.56.103", 3323, "root", "root", "test")
     # execute(cnx, "create database test1")
-    use_database(cnx, "test")
+    # use_database(cnx, "test")
     c = cnx.cursor()
     c.execute("select * from test1")
     data = c.fetchall()
