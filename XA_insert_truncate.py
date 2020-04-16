@@ -24,12 +24,25 @@ def use_database(cnx, database):
         c.close()
         return -1
 
+def test_insert(c, start, end):
+    count = start
+    while count < end:
+        sql = "insert into test6(a) value('{}')".format(count)
+        print(sql)
+        try:
+            c.execute(sql)
+        except Exception as err:
+            print(err)
+            exit(1)
+        count += 1
+
 if __name__ == '__main__':
     cnx = open_mysql_connection("192.168.56.103", 3323, "root", "root", "test")
-    # execute(cnx, "create database test1")
-    # use_database(cnx, "test")
+    cnx.autocommit(1)
     c = cnx.cursor()
-    c.execute("select * from test1")
-    data = c.fetchall()
-    print(data)
+    c.execute("truncate table test6")
+    test_insert(c, 0, 100)
+    c.execute("truncate table test6")
+    test_insert(c, 11,150)
+    c.close()
     close_mysql_connection(cnx)
